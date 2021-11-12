@@ -76,7 +76,7 @@ const search = function () {
   let array = [];
 
   fetch(
-    `http://localhost:8080/employees/page/?value=${value}&page=${currentPage}&pageSize=${10}`
+    `http://localhost:8080/employees/employee/?value=${value}&page=${currentPage}&pageSize=${10}`
   ).then(function (response) {
     table.innerHTML = "";
     if (response.ok) {
@@ -116,7 +116,9 @@ const generateDeleteListeners = function () {
 };
 
 const deleteEmployee = function (id) {
-  fetch(`http://localhost:8080/employees/delete/${id}`).then(search);
+  fetch(`http://localhost:8080/employees/delete/${id}`, {
+    method: "DELETE",
+  }).then(search);
 };
 
 const nextPage = function () {
@@ -199,18 +201,34 @@ const deleteDataNewEmployee = function () {
 btnAdd.addEventListener("click", showAddNewEmployee);
 
 btnUpdate.addEventListener("click", function () {
+  let newEmployee = new Object();
+  newEmployee.id = "";
+  newEmployee.name = employeeName.value;
+  newEmployee.technology = employeeTechnology.value;
+  newEmployee.address = employeeAddress.value;
+  newEmployee.age = employeeAge.value;
+
   if (btnUpdate.textContent === "Add Employee") {
-    fetch(
-      `http://localhost:8080/employees/saveNew/?name=${employeeName.value}&tech=${employeeTechnology.value}&address=${employeeAddress.value}&age=${employeeAge.value}`
-    ).then(function () {
+    fetch(`http://localhost:8080/employees/save`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newEmployee),
+    }).then(function () {
       deleteDataNewEmployee();
       fieldSearch();
     });
   } else {
     updateDeleteId.classList.remove("hidden");
-    fetch(
-      `http://localhost:8080/employees/save/?id=${employeeId.value}&name=${employeeName.value}&tech=${employeeTechnology.value}&address=${employeeAddress.value}&age=${employeeAge.value}`
-    ).then(function () {
+    newEmployee.id = employeeId.value;
+    fetch(`http://localhost:8080/employees/save`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newEmployee),
+    }).then(function () {
       employeeUpdate.classList.add("hidden");
       deleteDataNewEmployee();
       fieldSearch();
