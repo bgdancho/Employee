@@ -4,7 +4,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const searchField = document.querySelector(".search-field");
   const table = document.querySelector(".table");
   const tbody = document.querySelector(".tbody");
-  let updateButtons = document.querySelectorAll(".updateButton");
   let prev = document.querySelector(".btn_prev");
   let next = document.querySelector(".btn_next");
   let tableNav = document.querySelector(".table_nav");
