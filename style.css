@@ -84,3 +84,8 @@ tr:nth-child(even) {
   background-color: #4267b2;
   padding: 7px;
 }
+
+.save {
+  height: 24px;
+  width: 24px;
+}

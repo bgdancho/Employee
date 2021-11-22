@@ -35,6 +35,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
 
       let cellUpdate = document.createElement("td");
+
       let buttonUpdate = document.createElement("button");
       buttonUpdate.innerHTML = "Update";
       buttonUpdate.classList.add("updateButton");
@@ -190,7 +191,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     newEmployee.age = employeeAge.value;
 
     if (btnUpdate.textContent === "Add Employee") {
-      fetch(`http://localhost:8080/employees`, {
+      fetch(`http://localhost:8080/employees/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
