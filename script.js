@@ -36,16 +36,17 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
       let cellUpdate = document.createElement("td");
 
-      let buttonUpdate = document.createElement("button");
-      buttonUpdate.innerHTML = "Update";
+      let buttonUpdate = generateUpdateIcon(cellUpdate);
+
       buttonUpdate.classList.add("updateButton");
+      buttonUpdate.classList.add("update-cell");
       buttonUpdate.id = id;
       cellUpdate.appendChild(buttonUpdate);
       row.appendChild(cellUpdate);
 
       let cellDelete = document.createElement("td");
-      let buttonDelete = document.createElement("Button");
-      buttonDelete.innerHTML = "Delete";
+      let buttonDelete = generateDeleteIcon(cellDelete);
+
       buttonDelete.classList.add("deleteButton");
       buttonDelete.id = id;
       cellDelete.appendChild(buttonDelete);
@@ -218,3 +219,55 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
   });
 });
+
+function generateUpdateIcon(cell) {
+  const iconUpdate = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "svg"
+  );
+  const iconPath = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "path"
+  );
+
+  iconUpdate.setAttribute("fill", "none");
+  iconUpdate.setAttribute("viewBox", "0 0 24 24");
+  iconUpdate.setAttribute("stroke", "currentColor");
+  iconUpdate.classList.add("update-icon");
+
+  iconPath.setAttribute(
+    "d",
+    "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+  );
+  iconPath.setAttribute("stroke-linecap", "round");
+  iconPath.setAttribute("stroke-linejoin", "round");
+  iconPath.setAttribute("stroke-width", "2");
+  iconUpdate.appendChild(iconPath);
+  return cell.appendChild(iconUpdate);
+}
+
+function generateDeleteIcon(cell) {
+  const iconDelete = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "svg"
+  );
+  const iconPath = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "path"
+  );
+
+  iconDelete.setAttribute("fill", "none");
+  iconDelete.setAttribute("viewBox", "0 0 24 24");
+  iconDelete.setAttribute("stroke", "currentColor");
+  iconDelete.classList.add("update-icon");
+
+  iconPath.setAttribute(
+    "d",
+    "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+  );
+  iconPath.setAttribute("stroke-linecap", "round");
+  iconPath.setAttribute("stroke-linejoin", "round");
+  iconPath.setAttribute("stroke-width", "2");
+  iconDelete.appendChild(iconPath);
+  return cell.appendChild(iconDelete);
+}
