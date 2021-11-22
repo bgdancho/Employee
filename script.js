@@ -22,23 +22,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let currentPage = 1;
   let totalPages = 0;
 
-  // const generateHead = function () {
-
-  //   let info = ["ID", "Name", "Technology", "Address", "Age", "Update", "Delete"];
-  //   let row = document.createElement("tr");
-
-  //   for (let i = 0; i < info.length; i++) {
-  //     let cell = document.createElement("th");
-  //     let cellText = document.createTextNode(info[`${i}`]);
-  //     cell.appendChild(cellText);
-  //     row.appendChild(cell);
-  //   }
-  //   table.appendChild(row);
-  // };
-
   const generateTable = function (array) {
-    // generateHead();
-
     for (let i = 0; i < array.length; i++) {
       let row = document.createElement("tr");
       let { id, name, technology, address, age } = array[i];
@@ -76,11 +60,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
   const search = function () {
     tableNav.classList.add("hidden");
-    let value = searchField.value;
+    let filter = searchField.value;
     let array = [];
 
     fetch(
-      `http://localhost:8080/employees/employee/?value=${value}&page=${currentPage}&pageSize=${10}`
+      `http://localhost:8080/employees/?filter=${filter}&page=${currentPage}&pageSize=${10}`
     ).then(function (response) {
       tbody.innerHTML = "";
       if (response.ok) {
@@ -118,7 +102,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   };
 
   const deleteEmployee = function (id) {
-    fetch(`http://localhost:8080/employees/delete/${id}`, {
+    fetch(`http://localhost:8080/employees/${id}`, {
       method: "DELETE",
     }).then(search);
   };
@@ -164,9 +148,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   };
 
   const getEmployeeInfo = function (id) {
-    fetch(`http://localhost:8080/employees/getById/${id}`).then(function (
-      response
-    ) {
+    fetch(`http://localhost:8080/employees/${id}`).then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
           employeeUpdate.classList.remove("hidden");
@@ -209,7 +191,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     newEmployee.age = employeeAge.value;
 
     if (btnUpdate.textContent === "Add Employee") {
-      fetch(`http://localhost:8080/employees/save`, {
+      fetch(`http://localhost:8080/employees`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -222,8 +204,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     } else {
       updateDeleteId.classList.remove("hidden");
       newEmployee.id = employeeId.value;
-      fetch(`http://localhost:8080/employees/save`, {
-        method: "POST",
+      fetch(`http://localhost:8080/employees/`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
