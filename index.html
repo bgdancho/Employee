@@ -11,54 +11,87 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,400&display=swap" rel="stylesheet">
     <title>Employee management</title> 
   <body>
-    <div class="add-search-container">
-      <button class="btn_add button">Add Emp</button>
-      <div>
-        <label for="input">Search:</label>
-        <input type="text" name="input" class="search-field field" />
-      </div>
-    
-    <table class="table hidden">
-<thead>
-  <tr>
-    <th>ID</td>
-    <th>Name</td>
-    <th>Technology</td>
-    <th>Addres</td>
-    <th>Age</td>
-    <th>Update</td>
-    <th>Delete</td>
-  </tr>
-  <tbody class="tbody">
-
-  </tbody>
-</thead>
-    </table>
-
-    <div id="table_nav" class="table_nav hidden">
-      <button class="btn_prev">Previous</button>
-      <label for="page"></label>
-      <span name="pageIndicator" id="page" class="page_indicator"></span>
-      <button class="btn_next">Next</button>
-    </div>
-
-    <div class="update_employee hidden">
-      <span class="update_delete_id">
-        <label for="updateId">Id:</label>
-        <input type="text" name="id" class="update_id field" readonly />
-      </span>
-
-      <label for="updateName">Name:</label>
-      <input type="text" name="updateName" class="update_name field" />
-      <label for="updateTechnology">Technology:</label>
-      <input type="text" name="updateTechnology" class="update_tech field" />
-      <label for="address">Address:</label>
-      <input type="text" name="address" class="update_address field" />
-      <label for="age">Age:</label>
-      <input type="number" name="age" class="update_age field" />
-      <button class="btn_update">Update Emp</button>
-    </div>
-
-    <script src="script.js"></script>
-  </body>
-</html>
+      <div class="add-search-container">
+        <button class="btn-add button">Add Emp</button>
+        <div>
+          <label for="input">Search:</label>
+          <input type="text" name="input" class="search-field field" />
+        </div>
+        
+        <table class="table hidden">
+          <thead>
+            <tr>
+              <th>ID</td>
+                <th>Name</td>
+                  <th>Technology</td>
+                    <th>Addres</td>
+                      <th>Age</td>
+                        <th>Update</td>
+                          <th>Delete</td>
+                          </tr>
+                          <tbody class="tbody">
+                            
+                          </tbody>
+                        </thead>
+                      </table>
+                    
+                      <div class="pagination">
+                        <button class="btn btn-prev">
+                          <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="btn-icon"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          >
+                          <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
+                      </button>
+                      
+                      <div class="pages"></div>
+                      
+                      <button class="btn btn-next">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="btn-icon"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        >
+                        <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div class="update-employee hidden">
+                    <span class="update-delete-id">
+                      <label class="label" for="updateId">Id:</label>
+                      <input type="text" name="id" class="update-id field" readonly />
+                    </span>
+                    
+                    <label class="label" for="updateName">Name:</label>
+                    <input type="text" name="updateName" class="update-name field" />
+                    <label class="label" for="updateTechnology">Technology:</label>
+                    <input type="text" name="updateTechnology" class="update-tech field" />
+                    <label class="label" for="address">Address:</label>
+                    <input type="text" name="address" class="update-address field" />
+                    <label class="label" for="age">Age:</label>
+                    <input type="number" name="age" class="update-age field" />
+                    <button class= " button btn-update">Update Emp</button>
+                  </div>
+                  
+                
+                  <script src="script.js"></script>
+                </body>
+                </html>
+                

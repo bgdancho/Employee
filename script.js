@@ -4,19 +4,18 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const searchField = document.querySelector(".search-field");
   const table = document.querySelector(".table");
   const tbody = document.querySelector(".tbody");
-  let prev = document.querySelector(".btn_prev");
-  let next = document.querySelector(".btn_next");
-  let tableNav = document.querySelector(".table_nav");
-  let pageIndicator = document.querySelector(".page_indicator");
-  let btnUpdate = document.querySelector(".btn_update");
-  let btnAdd = document.querySelector(".btn_add");
-  let employeeUpdate = document.querySelector(".update_employee");
-  let employeeId = document.querySelector(".update_id");
-  let employeeName = document.querySelector(".update_name");
-  let employeeAddress = document.querySelector(".update_address");
-  let employeeTechnology = document.querySelector(".update_tech");
-  let employeeAge = document.querySelector(".update_age");
-  let updateDeleteId = document.querySelector(".update_delete_id");
+  let prev = document.querySelector(".btn-prev");
+  let next = document.querySelector(".btn-next");
+  let btnUpdate = document.querySelector(".btn-update");
+  let btnAdd = document.querySelector(".btn-add");
+  let employeeUpdate = document.querySelector(".update-employee");
+  let employeeId = document.querySelector(".update-id");
+  let employeeName = document.querySelector(".update-name");
+  let employeeAddress = document.querySelector(".update-address");
+  let employeeTechnology = document.querySelector(".update-tech");
+  let employeeAge = document.querySelector(".update-age");
+  let updateDeleteId = document.querySelector(".update-delete-id");
+  let pageCounter = document.querySelector(".pages");
 
   let currentPage = 1;
   let totalPages = 0;
@@ -39,7 +38,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
       let buttonUpdate = generateUpdateIcon(cellUpdate);
 
       buttonUpdate.classList.add("updateButton");
-      buttonUpdate.classList.add("update-cell");
       buttonUpdate.id = id;
       cellUpdate.appendChild(buttonUpdate);
       row.appendChild(cellUpdate);
@@ -55,12 +53,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
       tbody.appendChild(row);
     }
     table.appendChild(tbody);
-    tableNav.classList.remove("hidden");
     table.classList.remove("hidden");
   };
 
   const search = function () {
-    tableNav.classList.add("hidden");
     let filter = searchField.value;
     let array = [];
 
@@ -75,22 +71,41 @@ window.addEventListener("DOMContentLoaded", (event) => {
           [...array] = data.employeeList;
           totalPages = data.totalPages - 1;
 
-          if (currentPage === 0) {
-            prev.disabled = true;
-          }
+          resetPagesNumber();
 
-          if (currentPage === totalPages) {
-            next.disabled = true;
-          }
-          pageIndicator.textContent = currentPage + 1;
           if (array.length != 0) {
+            generatePages(totalPages);
+            setActivePage(currentPage);
+
             generateTable(array);
             generateDeleteListeners();
             generateUpdateListeners();
+          } else {
+            table.classList.add("hidden");
           }
         });
       }
     });
+  };
+
+  const generatePages = function (pages) {
+    for (let i = 0; i <= pages; i++) {
+      let pageEl = document.createElement("a");
+      pageEl.setAttribute("href", "#");
+      let pageNumber = i + 1;
+      pageEl.innerHTML = `${pageNumber}`;
+      pageEl.classList.add("page-link");
+      pageCounter.append(pageEl);
+    }
+  };
+  const resetPagesNumber = function () {
+    pageCounter.innerHTML = "";
+  };
+
+  const setActivePage = function (number) {
+    let result = document.querySelectorAll("a");
+    result.forEach((element) => element.classList.remove("page-link--current"));
+    result[number].classList.add("page-link--current");
   };
 
   const generateDeleteListeners = function () {
@@ -111,25 +126,21 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const nextPage = function () {
     if (currentPage < totalPages) {
       currentPage++;
-      pageIndicator.innerHTML = currentPage;
-      search(currentPage);
-      prev.disabled = false;
+      search(currentPage + 1);
     }
   };
 
   const prevPage = function () {
+    console.log(currentPage);
     if (currentPage > 0) {
       currentPage--;
-      pageIndicator.innerHTML = currentPage;
-      search(currentPage);
-      next.disabled = false;
+      search(currentPage - 1);
     }
   };
   const fieldSearch = function () {
     currentPage = 0;
     totalPages = 0;
-    prev.disabled = false;
-    next.disabled = false;
+
     deleteDataNewEmployee();
     search();
   };
