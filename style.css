@@ -1,43 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 body {
-  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+#menu {
+  background-color: #111827;
+  width: 300px;
+  /* height: 100%; */
+}
+.menu-table {
+  display: flex;
+  height: 1000px;
+}
+#menu .logo {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 30px 0 0 30px;
+}
+
+#menu .logo img {
+  width: 40px;
+  margin-right: 20px;
+}
+
+#menu .items {
+  margin-top: 40px;
+}
+#menu .items li {
+  list-style: none;
+  padding: 15px 0;
+  transition: 0.3s ease;
+}
+
+#menu .items li:hover {
+  background: #253047;
+  cursor: pointer;
+}
+
+#menu .items li i {
+  color: rgb(134, 141, 151);
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  margin: 0 10px 0 25px;
+}
+
+#menu .items li:hover i,
+#menu .items li:hover a {
+  color: #f3f4f6;
+}
+
+#menu .items li a {
+  text-decoration: none;
+  color: rgb(134, 141, 151);
+  transition: 0.3s ease;
 }
 
 .add-search-container {
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
+}
+
+.search {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid #d7dbe6;
+  border-radius: 4px;
+}
+.search i {
+  margin-right: 14px;
+}
+.search input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+.label {
+  color: #111827;
+  font-weight: 300;
 }
 
 .field {
   height: 20px;
   border-radius: 4px;
-  border: 2px solid #39997c;
+  border: 2px solid #35307c;
 }
-table,
-th,
-td {
-  border: 2px solid #d3d3d3;
-}
+
 .table {
-  align-self: flex-end;
-  margin-top: 20px;
+  align-self: center;
+  margin-top: 50px;
   width: 80%;
   text-align: center;
   border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
 }
 th,
-td {
-  padding: 8px;
+td,
+tr {
+  padding: 16px;
 }
 
 tr:nth-child(even) {
-  background-color: #e6f2ef;
+  background-color: #eeedfe;
 }
 
 .button {
   font-size: 18px;
   margin: 10px;
-  background-color: #087f5b;
+  background-color: #6a60f8;
   border: none;
   border-radius: 10px;
   padding: 10px 20px;
@@ -47,7 +128,7 @@ tr:nth-child(even) {
 
 .updateButton,
 .btn_update {
-  background-color: #39997c;
+  background-color: #6a60f8;
   color: whitesmoke;
   border-radius: 5px;
   font-size: 16px;
@@ -60,12 +141,13 @@ tr:nth-child(even) {
   font-size: 16px;
 }
 
-.hidden {
-  visibility: hidden;
-}
-
 .update-employee {
-  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px;
+  background-color: #f0effe;
+  border-radius: 10px;
 }
 
 .update-icon {
@@ -76,27 +158,73 @@ tr:nth-child(even) {
 .delete-icon:hover,
 .button:hover {
   cursor: pointer;
+  background-color: #5046de;
 }
-.label {
-  color: #054c37;
+.greeting {
+  margin: 20px;
+}
+
+/* *********** */
+/* INTERFACE */
+/* *********** */
+#interface {
+  width: calc(100% - 300px);
+  display: flex;
+  flex-direction: column;
+}
+
+#interface .navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 15px 30px;
+  border-bottom: 3px solid #594ef7;
+}
+
+#interface .navigation .search {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid #d7dbe6;
+  border-radius: 4px;
+}
+
+#interface .navigation .search i {
+  margin-right: 14px;
+}
+#interface .navigation .search input {
+  border: none;
+  outline: none;
+  font-size: 14px;
 }
 
 /* ********************** */
 /* PAGINATION */
 /* ********************** */
 
-.pagination,
+/* .pagination, */
 .pages {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 .pagination {
+  width: 80%;
   margin-top: 12px;
+  align-self: center;
+  display: flex;
+  justify-content: flex-end;
+}
+.elements {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn {
-  border: 1px solid#087f5b;
+  border: 1px solid#7a71f9;
   height: 48px;
   width: 48px;
   border-radius: 50%;
@@ -105,7 +233,7 @@ tr:nth-child(even) {
 }
 .btn:hover,
 .page-link--current {
-  background-color: #087f5b;
+  background-color: #5046de;
 }
 
 .btn:hover .btn-icon {
@@ -115,7 +243,7 @@ tr:nth-child(even) {
 .btn-icon {
   height: 24px;
   width: 24px;
-  stroke: #087f5b;
+  stroke: #594ef7;
 }
 
 .page-link:link,
@@ -133,6 +261,9 @@ tr:nth-child(even) {
 .page-link:hover,
 .page-link:active,
 .page-link.page-link--current {
-  background-color: #087f5b;
+  background-color: #5046de;
   color: #fff;
+}
+.hidden {
+  display: none;
 }

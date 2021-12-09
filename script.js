@@ -7,7 +7,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let prev = document.querySelector(".btn-prev");
   let next = document.querySelector(".btn-next");
   let btnUpdate = document.querySelector(".btn-update");
-  let btnAdd = document.querySelector(".btn-add");
   let employeeUpdate = document.querySelector(".update-employee");
   let employeeId = document.querySelector(".update-id");
   let employeeName = document.querySelector(".update-name");
@@ -16,9 +15,17 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let employeeAge = document.querySelector(".update-age");
   let updateDeleteId = document.querySelector(".update-delete-id");
   let pageCounter = document.querySelector(".pages");
+  let greeting = document.querySelector(".greeting");
+  let homeBtn = document.querySelector(".home");
+  let byIdBtn = document.querySelector(".id");
+  let byAddressBtn = document.querySelector(".address");
+  let byTechBtn = document.querySelector(".tech");
+  let byNameBtn = document.querySelector(".name");
+  let addBtn = document.querySelector(".add");
 
   let currentPage = 1;
   let totalPages = 0;
+  let orderBy = "";
 
   const generateTable = function (array) {
     for (let i = 0; i < array.length; i++) {
@@ -54,14 +61,18 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
     table.appendChild(tbody);
     table.classList.remove("hidden");
+    greeting.classList.add("hidden");
   };
 
   const search = function () {
     let filter = searchField.value;
     let array = [];
+    let sortBy = ["id", "address", "technology", "name"];
 
     fetch(
-      `http://localhost:8080/employees/?filter=${filter}&page=${currentPage}&pageSize=${10}`
+      `http://localhost:8080/employees/?filter=${filter}&page=${currentPage}&pageSize=${10}&orderBy=${
+        sortBy[orderBy]
+      }`
     ).then(function (response) {
       tbody.innerHTML = "";
       if (response.ok) {
@@ -80,8 +91,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
             generateTable(array);
             generateDeleteListeners();
             generateUpdateListeners();
+            activateButtons();
           } else {
             table.classList.add("hidden");
+            greeting.classList.remove("hidden");
+            greeting.innerHTML = "No results found...";
+            deactivateButtons();
           }
         });
       }
@@ -103,7 +118,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   };
 
   const setActivePage = function (number) {
-    let result = document.querySelectorAll("a");
+    let result = document.querySelectorAll(".page-link");
     result.forEach((element) => element.classList.remove("page-link--current"));
     result[number].classList.add("page-link--current");
   };
@@ -126,24 +141,48 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const nextPage = function () {
     if (currentPage < totalPages) {
       currentPage++;
-      search(currentPage + 1);
+      search();
     }
   };
 
   const prevPage = function () {
-    console.log(currentPage);
     if (currentPage > 0) {
       currentPage--;
-      search(currentPage - 1);
+      search();
     }
   };
-  const fieldSearch = function () {
-    currentPage = 0;
-    totalPages = 0;
 
-    deleteDataNewEmployee();
-    search();
+  const activateButtons = function () {
+    prev.classList.remove("hidden");
+    next.classList.remove("hidden");
+    pageCounter.classList.remove("hidden");
   };
+
+  const deactivateButtons = function () {
+    prev.classList.add("hidden");
+    next.classList.add("hidden");
+    pageCounter.classList.add("hidden");
+  };
+
+  const fieldSearch = function (orderBy) {
+    if (searchField.value) {
+      currentPage = 0;
+      totalPages = 0;
+
+      deleteDataNewEmployee();
+      search(orderBy);
+    } else {
+      table.classList.add("hidden");
+      deactivateButtons();
+      greeting.classList.remove("hidden");
+      greeting.innerHTML = "Hello, search for employee...";
+      deleteDataNewEmployee();
+    }
+  };
+
+  /*************************************** */
+  // EVENT LISTENERS
+  /**************************************/
 
   next.addEventListener("click", nextPage);
   prev.addEventListener("click", prevPage);
@@ -158,41 +197,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
       });
     });
   };
-
-  const getEmployeeInfo = function (id) {
-    fetch(`http://localhost:8080/employees/${id}`).then(function (response) {
-      if (response.ok) {
-        response.json().then(function (data) {
-          employeeUpdate.classList.remove("hidden");
-          let { id, name, technology, address, age } = data;
-          employeeId.value = id;
-          employeeName.value = name;
-          employeeTechnology.value = technology;
-          employeeAddress.value = address;
-          employeeAge.value = age;
-        });
-      }
-    });
-  };
-
-  const showAddNewEmployee = function () {
-    employeeUpdate.classList.remove("hidden");
-    btnUpdate.textContent = "Add Employee";
-    updateDeleteId.classList.add("hidden");
-    updateDeleteId.value = "";
-  };
-
-  const deleteDataNewEmployee = function () {
-    employeeId.value = 0;
-    employeeName.value = "";
-    employeeTechnology.value = "";
-    employeeAddress.value = "";
-    employeeAge.value = "";
-    employeeUpdate.classList.add("hidden");
-    btnUpdate.textContent = "Update Employee";
-  };
-
-  btnAdd.addEventListener("click", showAddNewEmployee);
 
   btnUpdate.addEventListener("click", function () {
     let newEmployee = new Object();
@@ -229,56 +233,116 @@ window.addEventListener("DOMContentLoaded", (event) => {
       });
     }
   });
+
+  homeBtn.addEventListener("click", function () {
+    location.href = "http://127.0.0.1:5500/";
+  });
+
+  byIdBtn.addEventListener("click", function () {
+    orderBy = 0;
+    fieldSearch();
+  });
+
+  byTechBtn.addEventListener("click", function () {
+    console.log("Sort by tech");
+    orderBy = 2;
+    fieldSearch();
+  });
+  byNameBtn.addEventListener("click", function () {
+    console.log("Sort by name");
+    orderBy = 3;
+    fieldSearch();
+  });
+  byAddressBtn.addEventListener("click", function () {
+    orderBy = 1;
+    fieldSearch(1);
+  });
+
+  const getEmployeeInfo = function (id) {
+    fetch(`http://localhost:8080/employees/${id}`).then(function (response) {
+      if (response.ok) {
+        response.json().then(function (data) {
+          employeeUpdate.classList.remove("hidden");
+          btnUpdate.textContent = "Update Employee";
+
+          let { id, name, technology, address, age } = data;
+          employeeId.value = id;
+          employeeName.value = name;
+          employeeTechnology.value = technology;
+          employeeAddress.value = address;
+          employeeAge.value = age;
+        });
+      }
+    });
+  };
+
+  const showAddNewEmployee = function () {
+    employeeUpdate.classList.remove("hidden");
+    btnUpdate.textContent = "Add Employee";
+    updateDeleteId.classList.add("hidden");
+    updateDeleteId.value = "";
+  };
+
+  const deleteDataNewEmployee = function () {
+    employeeId.value = 0;
+    employeeName.value = "";
+    employeeTechnology.value = "";
+    employeeAddress.value = "";
+    employeeAge.value = "";
+    employeeUpdate.classList.add("hidden");
+    btnUpdate.textContent = "Update Employee";
+  };
+
+  function generateUpdateIcon(cell) {
+    const iconUpdate = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    const iconPath = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+
+    iconUpdate.setAttribute("fill", "none");
+    iconUpdate.setAttribute("viewBox", "0 0 24 24");
+    iconUpdate.setAttribute("stroke", "currentColor");
+    iconUpdate.classList.add("update-icon");
+
+    iconPath.setAttribute(
+      "d",
+      "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+    );
+    iconPath.setAttribute("stroke-linecap", "round");
+    iconPath.setAttribute("stroke-linejoin", "round");
+    iconPath.setAttribute("stroke-width", "2");
+    iconUpdate.appendChild(iconPath);
+    return cell.appendChild(iconUpdate);
+  }
+
+  function generateDeleteIcon(cell) {
+    const iconDelete = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    const iconPath = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+
+    iconDelete.setAttribute("fill", "none");
+    iconDelete.setAttribute("viewBox", "0 0 24 24");
+    iconDelete.setAttribute("stroke", "currentColor");
+    iconDelete.classList.add("update-icon");
+
+    iconPath.setAttribute(
+      "d",
+      "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    );
+    iconPath.setAttribute("stroke-linecap", "round");
+    iconPath.setAttribute("stroke-linejoin", "round");
+    iconPath.setAttribute("stroke-width", "2");
+    iconDelete.appendChild(iconPath);
+    return cell.appendChild(iconDelete);
+  }
+  addBtn.addEventListener("click", showAddNewEmployee);
 });
-
-function generateUpdateIcon(cell) {
-  const iconUpdate = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "svg"
-  );
-  const iconPath = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "path"
-  );
-
-  iconUpdate.setAttribute("fill", "none");
-  iconUpdate.setAttribute("viewBox", "0 0 24 24");
-  iconUpdate.setAttribute("stroke", "currentColor");
-  iconUpdate.classList.add("update-icon");
-
-  iconPath.setAttribute(
-    "d",
-    "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-  );
-  iconPath.setAttribute("stroke-linecap", "round");
-  iconPath.setAttribute("stroke-linejoin", "round");
-  iconPath.setAttribute("stroke-width", "2");
-  iconUpdate.appendChild(iconPath);
-  return cell.appendChild(iconUpdate);
-}
-
-function generateDeleteIcon(cell) {
-  const iconDelete = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "svg"
-  );
-  const iconPath = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "path"
-  );
-
-  iconDelete.setAttribute("fill", "none");
-  iconDelete.setAttribute("viewBox", "0 0 24 24");
-  iconDelete.setAttribute("stroke", "currentColor");
-  iconDelete.classList.add("update-icon");
-
-  iconPath.setAttribute(
-    "d",
-    "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-  );
-  iconPath.setAttribute("stroke-linecap", "round");
-  iconPath.setAttribute("stroke-linejoin", "round");
-  iconPath.setAttribute("stroke-width", "2");
-  iconDelete.appendChild(iconPath);
-  return cell.appendChild(iconDelete);
-}
