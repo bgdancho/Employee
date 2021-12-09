@@ -15,7 +15,7 @@ body {
 }
 .menu-table {
   display: flex;
-  height: 1000px;
+  height: 3000px;
 }
 #menu .logo {
   display: flex;
